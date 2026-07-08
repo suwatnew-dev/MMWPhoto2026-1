@@ -1,0 +1,2985 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMWPhoto - คลังภาพกิจกรรมโรงเรียนเมืองมุกวิทยาคม</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<!-- เพิ่มฟอนต์ Prompt จาก Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1E5LTJzdt0YxYhgNgt02QknM1525fUOaT">
+
+    <style>
+		/* ===== CSS Variables (Minimal & Modern Premium Slate Palette) ===== */
+		:root {
+		  --header-h: 70px;
+		  --primary-dark: #0f172a;    /* สีกรมท่าสว่าง/ดีพสเลต สไตล์มินิมอล */
+		  --primary-color: #2563eb;   /* สีน้ำเงินแซฟไฟร์สากล ทันสมัย */
+		  --primary-light: #60a5fa;   /* สีฟ้าอ่อนสว่าง */
+		  --primary-gradient: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+		  --bg-color: #f8fafc;        /* พื้นหลังสะอาดตา Slate 50 */
+		  --bg-gradient: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+		  --text-main: #334155;       /* สีตัวอักษรหลัก */
+		  --text-muted: #64748b;      /* สีตัวอักษรรอง */
+		  --card-bg: #ffffff;
+		  --border-color: #e2e8f0;    /* เส้นขอบบางละเอียด */
+		  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+		  --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.03), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+		  --shadow-hover: 0 20px 35px -5px rgba(15, 23, 42, 0.08), 0 12px 16px -6px rgba(15, 23, 42, 0.04);
+		}
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Prompt', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: var(--text-main);
+			background: var(--bg-gradient);
+			min-height: 100vh;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		html, body {
+		  margin: 0 !important;
+		  padding: 0 !important;
+		}
+
+		.header {
+		  position: fixed !important;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  padding: 0.8rem 0 !important;
+		}
+
+		body {
+		  padding-top: calc(var(--header-h) + env(safe-area-inset-top, 0px)) !important;
+		}
+
+		.header {
+		  top: env(safe-area-inset-top, 0px);
+		}
+
+		@media (max-width: 480px) {
+		  :root { --header-h: 64px; }
+		}
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Modern Header Glassmorphism */
+       .header {
+			background: rgba(255, 255, 255, 0.8);
+			backdrop-filter: blur(20px);
+			-webkit-backdrop-filter: blur(20px);
+			border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+			box-shadow: 0 4px 30px rgba(0, 0, 0, 0.01);
+			position: sticky;
+			top: 0;
+			z-index: 100;
+			transition: all 0.3s ease;
+		}
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .auth-buttons {
+            flex-shrink: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .school-logo {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+        }
+
+        .logo-text h1 {
+            font-size: 1.15rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Prompt', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+        }
+
+        .btn-small-header {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            gap: 6px;
+            border-radius: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary-dark);
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(37, 99, 233, 0.15);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            border-color: var(--text-muted);
+            color: var(--primary-dark);
+        }
+
+        /* Ultra Clean Search Section */
+        .search-section {
+            background: transparent;
+            margin: 2.5rem 0 1.5rem 0;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            border: none;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 45px 14px 48px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-family: 'Prompt', sans-serif;
+            outline: none;
+            transition: all 0.2s ease;
+            background-color: #ffffff;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .search-icon-inside {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0.7;
+        }
+
+        .clear-search-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 6px; 
+            display: none; 
+            transition: all 0.2s;
+            z-index: 10;
+            border-radius: 50%;
+        }
+
+        .clear-search-btn:hover {
+            color: #ef4444; 
+            background-color: #fee2e2;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 233, 0.08);
+        }
+        
+        #searchBtn {
+            min-width: 52px; 
+            padding: 0;
+            border-radius: 14px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+        }
+        
+        #searchBtn:hover {
+            transform: translateY(-1px);
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .filter-select {
+            padding: 11px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: 'Prompt', sans-serif;
+            outline: none;
+            transition: all 0.2s ease;
+            color: var(--text-main);
+            background-color: #ffffff;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 233, 0.06);
+        }
+
+        /* Activities Grid Layout */
+        .activities-section {
+            margin: 2rem 0;
+        }
+
+        .activities-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 2rem;
+			margin-top: 1.5rem;
+			padding-bottom: 0;
+		}
+
+		@media (max-width: 960px) {
+			.activities-grid {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+		@media (max-width: 640px) {
+			.activities-grid {
+				grid-template-columns: 1fr;
+				gap: 1.5rem;
+			}
+		}
+
+        /* ===== Premium Activity Card Design ===== */
+        .activity-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            position: relative;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(37, 99, 233, 0.15);
+        }
+        
+        .card-image-wrapper {
+            position: relative;
+            height: 230px;
+            overflow: hidden;
+            background-color: #f1f5f9;
+        }
+
+        .activity-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .activity-card:hover .activity-image {
+            transform: scale(1.04);
+        }
+        
+        /* Floating Glass Date Badge */
+        .date-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 6px 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        
+        .date-badge .day {
+            display: block;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            line-height: 1.1;
+        }
+        
+        .date-badge .month {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 1px;
+        }
+
+        .view-count-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+        
+        .view-count-update {
+            transform: scale(1.1);
+            background: rgba(37, 99, 233, 0.85);
+        }
+
+        .view-count-badge i {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .activity-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .activity-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .activity-description {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .activity-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .activity-card:hover .tag {
+            background: rgba(37, 99, 233, 0.08);
+            color: var(--primary-color);
+        }
+        
+        .card-footer {
+            padding: 0.85rem 1.25rem;
+            background: #fafafa;
+            border-top: 1px solid rgba(226, 232, 240, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .photographer-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            max-width: 50%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .photographer-info i {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .activity-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .btn-icon-action {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-icon-action:hover {
+            background: var(--primary-dark);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-1px);
+        }
+
+        /* --- Minimalist SweetAlert2 Customize --- */
+        div:where(.swal2-container) {
+            z-index: 9999 !important;
+            font-family: 'Prompt', sans-serif !important;
+        }
+        
+        .swal2-popup {
+            border-radius: 16px !important;
+            padding: 2rem 1.5rem !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid var(--border-color) !important;
+        }
+
+        .swal2-title {
+            color: var(--primary-dark) !important;
+            font-weight: 600 !important;
+            font-size: 1.35rem !important;
+        }
+
+        .swal2-confirm {
+            background: var(--primary-dark) !important;
+            border-radius: 10px !important;
+            padding: 10px 24px !important;
+            font-weight: 500 !important;
+            font-size: 0.9rem !important;
+            box-shadow: none !important;
+            transition: all 0.2s ease !important;
+        }
+        .swal2-confirm:hover {
+            background: var(--primary-color) !important;
+        }
+
+        .swal2-cancel {
+            background: #f1f5f9 !important;
+            color: var(--text-main) !important;
+            border-radius: 10px !important;
+            padding: 10px 24px !important;
+            font-weight: 500 !important;
+            font-size: 0.9rem !important;
+        }
+
+        .swal2-icon.swal2-success { border-color: #10b981 !important; color: #10b981 !important; }
+        .swal2-icon.swal2-success [class^=swal2-success-line] { background-color: #10b981 !important; }
+        .swal2-icon.swal2-success .swal2-success-ring { border-color: rgba(16, 185, 129, 0.2) !important; }
+        
+        .swal2-html-container .form-group {
+            text-align: left;
+            margin-bottom: 1rem;
+        }
+        
+        .swal2-html-container label {
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+            display: block;
+            font-size: 0.85rem;
+        }
+        
+        .swal2-html-container .form-input {
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 0.9rem;
+            font-family: 'Prompt', sans-serif;
+            transition: all 0.2s ease;
+            background-color: #ffffff;
+            color: var(--text-main);
+        }
+        
+        .swal2-html-container .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 233, 0.06);
+            outline: none;
+        }
+
+        /* Modern Share Component */
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .share-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .share-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .share-item:hover .share-icon {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .share-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .share-fb { background: #1877F2; }
+        .share-line { background: #00C300; }
+        .share-copy { background: #64748b; }
+        .share-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .share-tiktok { background: #000000; }
+        
+        /* Date Selector Grid */
+        .date-selector-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .date-select {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: 'Prompt', sans-serif;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .date-select:focus {
+             border-color: var(--primary-color);
+             outline: none;
+        }
+        
+        .date-select-day { flex: 1; }
+        .date-select-month { flex: 2; }
+        .date-select-year { flex: 1.5; }
+        
+        /* Modern Tabs UI */
+        .image-option-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 10px;
+        }
+        
+        .btn-tab {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 7px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            font-family: 'Prompt', sans-serif;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-tab.active {
+            background: white;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Full Screen Photo Viewer (Immersive Ambient) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .modal-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .modal-image {
+            max-width: 92%;
+            max-height: 88%;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+            cursor: grab;
+            user-select: none;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            border-radius: 8px;
+        }
+
+        .modal-image:active {
+            cursor: grabbing;
+        }
+
+        .modal-close {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2001;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .modal-controls {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 2001;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-control-btn {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .modal-control-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--primary-light);
+        }
+
+        .zoom-info {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            color: rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 2001;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- Modern Clean Admin Panel --- */
+        .admin-section {
+            display: none;
+            background: #ffffff;
+            margin: 2.5rem 0;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-header h2 {
+            font-size: 1.35rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .admin-toolbar {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            background: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .admin-search-wrapper {
+            flex: 1;
+            min-width: 220px;
+            position: relative;
+        }
+
+        .admin-search-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .admin-search-input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: 'Prompt', sans-serif;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .admin-search-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .admin-filter-select {
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: 'Prompt', sans-serif;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            min-width: 140px;
+            transition: all 0.2s;
+        }
+
+        /* Modern Typography Admin Table */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 800px; 
+        }
+
+        .admin-table th {
+            background: #f8fafc;
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .admin-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .admin-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .btn-icon {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+        
+        .btn-edit { color: var(--primary-color); }
+        .btn-edit:hover { background: #eff6ff; border-color: var(--primary-light); }
+        
+        .btn-toggle { color: #d97706; }
+        .btn-toggle:hover { background: #fffbeb; border-color: #fcd34d; }
+        
+        .btn-delete { color: #dc2626; }
+        .btn-delete:hover { background: #fef2f2; border-color: #fca5a5; }
+
+        /* Overlay Login Section Blur */
+        .login-section {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .login-form {
+            position: relative;
+            background: white;
+            margin: 12% auto;
+            padding: 2.5rem;
+            border-radius: 16px;
+            max-width: 380px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border-color);
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: 'Prompt', sans-serif;
+            outline: none;
+            transition: all 0.2s ease;
+            background: #ffffff;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 233, 0.06);
+        }
+
+        /* Minimal Loader */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+            color: var(--primary-color);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer Area */
+		.footer {
+			margin-top: 4rem;
+			text-align: center;
+			padding: 2.5rem 0;
+			color: var(--text-muted);
+			font-size: 0.8rem;
+			background: transparent;
+			border-top: 1px solid var(--border-color);
+            letter-spacing: 0.05em;
+		}
+
+        /* Pagination Clean Pill */
+        .pagination {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 0.5rem;
+			margin-top: 2rem;
+			margin-bottom: 0;
+			background: transparent;
+			padding: 0;
+			box-shadow: none;
+		}
+
+        .pagination button {
+            padding: 9px 18px;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-main);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            font-family: 'Prompt', sans-serif;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 100px;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #f8fafc;
+            color: var(--primary-dark);
+            border-color: var(--text-muted);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .page-info {
+            background: #f1f5f9;
+            color: var(--text-main);
+            padding: 9px 16px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin: 0 4px;
+        }
+
+        /* Status Pills */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-published {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .status-draft {
+            background: #fce8e6;
+            color: #c5221f;
+        }
+
+        /* ===== Immersive Activity Detail View ===== */
+        .activity-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            z-index: 2000;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .activity-detail-close {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2001;
+            transition: all 0.2s ease;
+        }
+
+        .activity-detail-close:hover {
+            transform: scale(1.05) rotate(90deg);
+            background: var(--primary-dark);
+        }
+
+        .activity-detail-header {
+            position: relative;
+            height: 55vh; 
+            min-height: 380px;
+            overflow: hidden;
+            background: #0f172a;
+        }
+
+        .activity-detail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+        }
+
+        .activity-detail-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 70%, rgba(0,0,0,0) 100%);
+            color: white;
+            padding: 3rem 2rem; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .activity-detail-title-wrapper {
+            max-width: 860px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .activity-detail-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            color: white;
+        }
+
+        .activity-detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            font-size: 0.9rem;
+            opacity: 0.85;
+            align-items: center;
+        }
+
+        .activity-detail-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .activity-detail-meta i {
+            color: rgba(255,255,255,0.7); 
+        }
+
+        .activity-detail-body {
+            position: relative;
+            background: white;
+            border-radius: 24px 24px 0 0; 
+            padding: 3rem 2rem;
+            margin-top: -24px; 
+            z-index: 10;
+            max-width: 860px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: 45vh;
+        }
+
+        .activity-detail-description {
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--text-main);
+            margin-bottom: 2.5rem;
+            white-space: pre-line; 
+        }
+
+        .activity-detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 2.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .activity-detail-tag {
+            background: #f1f5f9;
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .activity-detail-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px; 
+            padding-top: 1rem;
+            flex-wrap: wrap; 
+        }
+
+        .activity-detail-actions .btn {
+            padding: 12px 28px;
+            font-size: 0.95rem;
+            min-width: 200px;
+            border-radius: 12px;
+            justify-content: center;
+            box-shadow: none;
+        }
+
+        /* IOS Elegant Custom Toggle Switch */
+        .switch-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+            padding: 10px 14px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .switch-label {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        
+      /* Screen Responsiveness Tweaks */
+      @media (max-width: 480px) {
+        .container { padding: 0 16px; }
+        .header { padding: 0.6rem 0; }
+        
+        .logo-text h1 { font-size: 1.05rem; }
+        .logo-text p { font-size: 0.75rem; }
+        .school-logo { width: 38px; height: 38px; }
+        
+        .search-section { margin: 1.5rem 0; }
+        .search-input { padding: 12px 40px 12px 42px; font-size: 0.9rem; } 
+        .search-icon-inside { left: 14px; font-size: 0.9rem; }
+        
+        .card-image-wrapper { height: 190px; }
+        
+        .activity-detail-header { height: 42vh; min-height: 280px; }
+        .activity-detail-overlay { padding: 1.5rem 1rem; }
+        .activity-detail-title { font-size: 1.4rem; }
+        .activity-detail-body { padding: 2rem 1rem; }
+        .activity-detail-description { font-size: 0.95rem; }
+        .activity-detail-actions .btn { width: 100%; min-width: 0; padding: 12px 16px; }
+        
+        .pagination { flex-direction: column; width: 100%; gap: 8px; }
+        .pagination button { width: 100%; }
+        .page-info { width: 100%; text-align: center; }
+        
+        .share-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="https://lh3.googleusercontent.com/d/1E5LTJzdt0YxYhgNgt02QknM1525fUOaT" alt="โลโก้โรงเรียนเมืองมุกวิทยาคม" class="school-logo">
+                    <div class="logo-text">
+                        <h1>คลังภาพกิจกรรม</h1>
+                        <p>โรงเรียนเมืองมุกวิทยาคม</p>
+                    </div>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-primary btn-small-header" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        เข้าสู่ระบบ
+                    </button>
+                    <button class="btn btn-secondary btn-small-header" id="logoutBtn" style="display: none;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        ออกจากระบบ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-form">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon-inside"></i>
+                    <input type="text" class="search-input" id="searchInput" placeholder="ค้นหากิจกรรมที่ต้องการ...">
+                    <i class="fas fa-times clear-search-btn" id="clearSearchBtn" title="ล้างค่าค้นหา"></i>
+                </div>
+                <button class="btn btn-primary" id="searchBtn" aria-label="ค้นหา">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>เดือน</label>
+                    <select class="filter-select" id="monthFilter">
+                        <option value="">ทุกเดือน</option>
+                        <option value="01">มกราคม</option>
+                        <option value="02">กุมภาพันธ์</option>
+                        <option value="03">มีนาคม</option>
+                        <option value="04">เมษายน</option>
+                        <option value="05">พฤษภาคม</option>
+                        <option value="06">มิถุนายน</option>
+                        <option value="07">กรกฎาคม</option>
+                        <option value="08">สิงหาคม</option>
+                        <option value="09">กันยายน</option>
+                        <option value="10">ตุลาคม</option>
+                        <option value="11">พฤศจิกายน</option>
+                        <option value="12">ธันวาคม</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>ปี</label>
+                    <select class="filter-select" id="yearFilter">
+                        <option value="">ทุกปี</option>
+                        <option value="2026">2569</option>
+                        <option value="2025">2568</option>
+                        <option value="2024">2567</option>
+                        <option value="2023">2566</option>
+                        <option value="2022">2565</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>แท็ก</label>
+                    <select class="filter-select" id="tagFilter">
+                        <option value="">ทุกแท็ก</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner"></i>
+            <p style="margin-top: 15px; color: var(--text-muted); font-weight: 500;">กำลังโหลดข้อมูลกิจกรรม...</p>
+        </div>
+
+        <!-- Activities Section -->
+        <section class="activities-section">
+            <div class="activities-grid" id="activitiesGrid">
+            </div>
+            <div class="pagination" id="pagination">
+                <button id="prevBtn" disabled>
+                    <i class="fas fa-arrow-left"></i>
+                    ก่อนหน้า
+                </button>
+                <div class="page-info" id="pageInfo">หน้า 1 จาก 1</div>
+                <button id="nextBtn" disabled>
+                    ถัดไป
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard -->
+        <section class="admin-section" id="adminSection">
+            <div class="admin-header">
+                <h2><i class="fas fa-cog"></i> จัดการกิจกรรม</h2>
+                <button class="btn btn-primary" id="addActivityBtn">
+                    <i class="fas fa-plus"></i>
+                    เพิ่มกิจกรรม
+                </button>
+            </div>
+            
+            <div class="admin-toolbar">
+                <div class="admin-search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="admin-search-input" id="adminSearchInput" placeholder="ค้นหาชื่อกิจกรรม, แท็ก...">
+                </div>
+                <select id="adminStatusFilter" class="admin-filter-select">
+                    <option value="all">สถานะทั้งหมด</option>
+                    <option value="published">เผยแพร่แล้ว</option>
+                    <option value="draft">แบบร่าง</option>
+                </select>
+                 <select id="adminYearFilter" class="admin-filter-select">
+                    <option value="all">ปีทั้งหมด</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">หัวข้อ</th>
+                            <th style="width: 25%;">วันที่/ข้อมูล</th>
+                            <th style="width: 15%;">สถานะ</th>
+                            <th style="width: 20%;">การจัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 10px; color: var(--text-muted); font-size: 0.9rem; text-align: right;">
+                รายการทั้งหมด: <span id="adminTotalCount">0</span> รายการ
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            © 2026 MUANGMUKWITTAYAKHOM SCHOOL I SUWAT PHALASUN 
+        </footer>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </span>
+            <div class="zoom-info" id="zoomInfo">100%</div>
+            <img class="modal-image" id="modalImage" src="" alt="">
+            <div class="modal-controls">
+                <button class="modal-control-btn" id="zoomOutBtn" title="ซูมออก">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="modal-control-btn" id="resetZoomBtn" title="รีเซ็ตซูม">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="modal-control-btn" id="zoomInBtn" title="ซูมเข้า">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Detail Modal -->
+    <div class="activity-detail-modal" id="activityModal">
+        <button class="activity-detail-close" id="activityModalClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="activityModalContent">
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-section" id="loginSection">
+        <div class="login-form">
+            <h2>
+                <i class="fas fa-user-shield" style="margin-right: 8px;"></i>
+                เข้าสู่ระบบผู้ดูแล
+            </h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>ชื่อผู้ใช้</label>
+                    <input type="text" class="form-input" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label>รหัสผ่าน</label>
+                    <div style="position: relative;">
+                        <input type="password" class="form-input" id="password" required style="padding-right: 45px;">
+                        <button type="button" id="togglePassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; padding: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        เข้าสู่ระบบ
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelLogin" style="flex: 1; justify-content: center;">
+                        ยกเลิก
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+		// Configuration
+        const CONFIG = {
+            BASE_URL: 'https://script.google.com/macros/s/AKfycbyCdTIFgOp4ZhxBPp60WM0jqq-X-WAR-vwqVh4nzW_aqmH6xphXUCkcENkdhXOoVkKZ/exec',
+            ITEMS_PER_PAGE: 9, 
+            SHEET_ID: '13quDxkGVsmfPLCLxeDfB2zVBaO9kDf7L1Q7krEAMA20',
+        };
+
+        let currentPage = 1;
+        let totalPages = 1;
+        let isLoggedIn = false;
+        let globalActivities = [];
+        let currentActivities = [];
+
+        let currentZoom = 1;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let imageStartX = 0;
+        let imageStartY = 0;
+
+        function loadLocalActivities() {}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLocalActivities();
+            initializeApp();
+            setupEventListeners();
+            loadActivities();
+            checkUrlForActivity();
+        });
+
+        function checkUrlForActivity() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const activityId = urlParams.get('activityId');
+            
+            if (activityId) {
+                window.pendingActivityId = activityId;
+            }
+        }
+
+        function initializeApp() {
+            const token = sessionStorage.getItem('adminToken');
+            if (token) {
+                isLoggedIn = true;
+                showAdminInterface();
+            }
+            loadAvailableYears();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('searchBtn').addEventListener('click', handleSearch);
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            });
+
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            
+            searchInput.addEventListener('input', function() {
+                if (this.value.length > 0) {
+                    clearSearchBtn.style.display = 'block';
+                } else {
+                    clearSearchBtn.style.display = 'none';
+                }
+            });
+
+            clearSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                this.style.display = 'none';
+                searchInput.focus();
+                handleSearch();
+            });
+
+            document.getElementById('monthFilter').addEventListener('change', handleSearch);
+            document.getElementById('yearFilter').addEventListener('change', handleSearch);
+            document.getElementById('tagFilter').addEventListener('change', handleSearch);
+
+            document.getElementById('prevBtn').addEventListener('click', () => changePage(currentPage - 1));
+            document.getElementById('nextBtn').addEventListener('click', () => changePage(currentPage + 1));
+
+            document.getElementById('loginBtn').addEventListener('click', showLoginForm);
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            document.getElementById('cancelLogin').addEventListener('click', hideLoginForm);
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('togglePassword').addEventListener('click', togglePasswordVisibility);
+
+            document.getElementById('modalClose').addEventListener('click', closeModal);
+            document.getElementById('imageModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+
+            document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
+            document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
+            document.getElementById('resetZoomBtn').addEventListener('click', resetZoom);
+            document.getElementById('modalImage').addEventListener('wheel', handleWheelZoom);
+
+            setupImageDrag();
+
+            document.getElementById('activityModalClose').addEventListener('click', closeActivityModal);
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const activityModal = document.getElementById('activityModal');
+                    const imageModal = document.getElementById('imageModal');
+                    if (activityModal.style.display === 'block') closeActivityModal();
+                    else if (imageModal.style.display === 'block') closeModal();
+                }
+                if (document.getElementById('imageModal').style.display === 'block') {
+                    if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomIn(); }
+                    else if (e.key === '-') { e.preventDefault(); zoomOut(); }
+                    else if (e.key === '0') { e.preventDefault(); resetZoom(); }
+                }
+            });
+
+            document.getElementById('addActivityBtn').addEventListener('click', showAddActivityForm);
+            
+            document.getElementById('adminSearchInput').addEventListener('keyup', filterAdminActivities);
+            document.getElementById('adminStatusFilter').addEventListener('change', filterAdminActivities);
+            document.getElementById('adminYearFilter').addEventListener('change', filterAdminActivities);
+        }
+        
+        function filterAdminActivities() {
+            const searchText = document.getElementById('adminSearchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('adminStatusFilter').value;
+            const yearFilter = document.getElementById('adminYearFilter').value;
+            
+            const rows = document.querySelectorAll('#adminTableBody tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                if (row.cells.length < 2) return;
+                
+                const title = row.querySelector('.admin-title-text').textContent.toLowerCase();
+                const tags = row.querySelector('.admin-tags-text').textContent.toLowerCase();
+                const status = row.getAttribute('data-status');
+                const year = row.getAttribute('data-year');
+                
+                const matchesSearch = title.includes(searchText) || tags.includes(searchText);
+                const matchesStatus = statusFilter === 'all' || status === statusFilter;
+                const matchesYear = yearFilter === 'all' || year === yearFilter;
+                
+                if (matchesSearch && matchesStatus && matchesYear) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('adminTotalCount').textContent = visibleCount;
+        }
+
+        async function loadAvailableYears() {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+                
+                const response = await fetch(`${CONFIG.BASE_URL}?action=getYears`, {
+                    signal: controller.signal,
+                    mode: 'cors'
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result && result.success) {
+                        updateYearFilter(result.years || []);
+                        updateAdminYearFilter(result.years || []); 
+                    }
+                }
+            } catch (error) {
+                console.log('Could not load years from server:', error.message);
+            }
+        }
+
+        function updateYearFilter(years) {
+            const yearFilter = document.getElementById('yearFilter');
+            const currentValue = yearFilter.value;
+            yearFilter.innerHTML = '<option value="">ทุกปี</option>';
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = (year + 543);
+                yearFilter.appendChild(option);
+            });
+            if (currentValue && years.includes(parseInt(currentValue))) {
+                yearFilter.value = currentValue;
+            }
+        }
+        
+        function updateAdminYearFilter(years) {
+            const adminYearFilter = document.getElementById('adminYearFilter');
+            adminYearFilter.innerHTML = '<option value="all">ปีทั้งหมด</option>';
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = (year + 543);
+                adminYearFilter.appendChild(option);
+            });
+        }
+        
+        function parseDateCorrectly(dateInput) {
+            if (!dateInput) return new Date();
+            
+            try {
+                if (dateInput instanceof Date) return dateInput;
+
+                let cleanDate = String(dateInput).trim();
+                
+                cleanDate = cleanDate.split('T')[0].split(' ')[0];
+                
+                let day, month, year;
+
+                if (cleanDate.includes('/')) {
+                    const parts = cleanDate.split('/');
+                    if (parts.length === 3) {
+                        day = parseInt(parts[0], 10);
+                        month = parseInt(parts[1], 10) - 1; 
+                        year = parseInt(parts[2], 10);
+                    }
+                } 
+                else if (cleanDate.includes('-')) {
+                    const parts = cleanDate.split('-');
+                    if (parts.length === 3) {
+                        if (parts[0].length === 4) {
+                            year = parseInt(parts[0], 10);
+                            month = parseInt(parts[1], 10) - 1;
+                            day = parseInt(parts[2], 10);
+                        } else { 
+                            day = parseInt(parts[0], 10);
+                            month = parseInt(parts[1], 10) - 1;
+                            year = parseInt(parts[2], 10);
+                        }
+                    }
+                } else {
+                    return new Date(dateInput); 
+                }
+
+                if (year >= 2500) {
+                    year -= 543;
+                }
+
+                if (isNaN(day) || isNaN(month) || isNaN(year)) {
+                    return new Date();
+                }
+
+                return new Date(year, month, day);
+            } catch (e) {
+                console.error("Date parsing error:", e);
+                return new Date();
+            }
+        }
+
+        async function loadActivities() {
+            showLoading(true);
+            try {
+                const query = document.getElementById('searchInput').value;
+                const month = document.getElementById('monthFilter').value;
+                const year = document.getElementById('yearFilter').value;
+                const tag = document.getElementById('tagFilter').value;
+                
+                const params = new URLSearchParams();
+                params.append('action', 'getActivities');
+                if (query) params.append('query', query);
+                if (month) params.append('month', month);
+                if (year) params.append('year', year);
+                if (tag) params.append('tag', tag);
+                
+                const token = sessionStorage.getItem('adminToken');
+                if (token && isLoggedIn) {
+                    params.append('token', token);
+                }
+                
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+                
+                const response = await fetch(`${CONFIG.BASE_URL}?${params.toString()}`, {
+                    signal: controller.signal,
+                    mode: 'cors'
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const result = await response.json();
+                
+                if (result && result.success) {
+                    const activities = (result.data || []).filter(a => a && a.id);
+                    
+                    activities.sort((a, b) => parseDateCorrectly(b.date) - parseDateCorrectly(a.date));
+                    
+                    globalActivities = activities;
+                    
+                    const publicActivities = globalActivities.filter(a => {
+                        return a.isPublished === true || a.isPublished === 'true' || a.isPublished === 'TRUE' || a.isPublished === 1;
+                    });
+                    
+                    displayActivities(publicActivities);
+                    
+                    if (isLoggedIn) loadAdminData();
+
+                    if (window.pendingActivityId) {
+                        const found = globalActivities.find(a => a.id === window.pendingActivityId);
+                        if (found) {
+                            openActivityDetail(window.pendingActivityId);
+                        }
+                        window.pendingActivityId = null;
+                    }
+                    
+                } else {
+                    throw new Error(result?.error || 'Invalid response from server');
+                }
+            } catch (error) {
+                console.error('Google Apps Script connection failed:', error.message);
+                globalActivities = [];
+                currentActivities = [];
+                displayActivities([]);
+                showErrorNotification();
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function showErrorNotification() {
+             if (document.querySelector('.error-notice')) document.querySelector('.error-notice').remove();
+                const notice = document.createElement('div');
+                notice.className = 'error-notice';
+                notice.style.cssText = `position: fixed; top: 80px; right: 20px; background: rgba(220, 53, 69, 0.9); color: white; padding: 12px 20px; border-radius: 10px; font-size: 0.9rem; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(220, 53, 69, 0.3);`;
+                notice.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้`;
+                document.body.appendChild(notice);
+                setTimeout(() => { if (notice.parentNode) notice.remove(); }, 8000);
+        }
+
+        function displayActivities(activities) {
+            const grid = document.getElementById('activitiesGrid');
+            
+            totalPages = Math.ceil(activities.length / CONFIG.ITEMS_PER_PAGE);
+            if (totalPages === 0) totalPages = 1;
+            
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const startIndex = (currentPage - 1) * CONFIG.ITEMS_PER_PAGE;
+            const endIndex = startIndex + CONFIG.ITEMS_PER_PAGE;
+            const pageActivities = activities.slice(startIndex, endIndex);
+            
+            currentActivities = activities;
+            
+            updateTagFilter(activities);
+            
+            if (pageActivities.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--text-muted);">
+                        <i class="fas fa-search" style="font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.3; color: var(--primary-color)"></i>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary-dark);">ไม่พบกิจกรรมที่ค้นหา</h3>
+                        <p>ลองเปลี่ยนคำค้นหาหรือตัวกรองใหม่</p>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = pageActivities.map(activity => createActivityCard(activity)).join('');
+                
+                grid.querySelectorAll('.activity-card').forEach(card => {
+                    card.addEventListener('click', function(e) {
+                        if (e.target.closest('button')) {
+                            const button = e.target.closest('button');
+                            const action = button.getAttribute('data-action');
+                            const id = button.getAttribute('data-id');
+                            
+                            if (action === 'open-album') {
+                                incrementView(id);
+                                window.open(button.getAttribute('data-album-link'), '_blank');
+                            } else if (action === 'view-image') {
+                                incrementView(id);
+                                openImageModal(button.getAttribute('data-image-url'));
+                            } else if (action === 'share-activity') {
+                                shareActivity(id);
+                            }
+                        } else {
+                            openActivityDetail(this.getAttribute('data-activity-id'));
+                        }
+                    });
+                });
+            }
+            updatePagination();
+        }
+
+        function updateTagFilter(activities) {
+            const tagFilter = document.getElementById('tagFilter');
+            const currentValue = tagFilter.value;
+            const allTags = new Set();
+            activities.forEach(activity => {
+                if (activity.tags) {
+                    String(activity.tags).split(',').map(t => t.trim()).filter(t => t).forEach(t => allTags.add(t));
+                }
+            });
+            const sortedTags = Array.from(allTags).sort();
+            tagFilter.innerHTML = '<option value="">ทุกแท็ก</option>';
+            sortedTags.forEach(tag => {
+                const option = document.createElement('option');
+                option.value = tag;
+                option.textContent = tag;
+                tagFilter.appendChild(option);
+            });
+            if (currentValue && sortedTags.includes(currentValue)) tagFilter.value = currentValue;
+        }
+
+        function createActivityCard(activity) {
+            const tags = activity.tags ? String(activity.tags).split(',').slice(0, 3).map(tag => `<span class="tag">${tag.trim()}</span>`).join('') : '';
+            
+            const dateObj = parseDateCorrectly(activity.date);
+
+            const day = dateObj.getDate();
+            const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มี.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+            const month = monthNames[dateObj.getMonth()];
+            
+            const viewCount = activity.views || 0;
+
+            return `
+                <div class="activity-card" data-activity-id="${activity.id}">
+                    <div class="card-image-wrapper">
+                        <div class="date-badge">
+                            <span class="day">${day}</span>
+                            <span class="month">${month}</span>
+                        </div>
+                        <div class="view-count-badge" id="view-badge-${activity.id}">
+                            <i class="fas fa-eye"></i> <span>${viewCount}</span>
+                        </div>
+                        <img src="${activity.imageUrl}" alt="${activity.title}" class="activity-image">
+                    </div>
+                    
+                    <div class="activity-content">
+                        <div class="activity-tags">${tags}</div>
+                        <h3 class="activity-title">${activity.title}</h3>
+                        <p class="activity-description">${activity.description}</p>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <div class="photographer-info">
+                            ${activity.photographer ? `<i class="fas fa-camera"></i> ${activity.photographer}` : ''}
+                        </div>
+                        <div class="activity-actions">
+                            <button class="btn-icon-action" data-action="view-image" data-id="${activity.id}" data-image-url="${activity.imageUrl}" title="ดูรูป">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                            <button class="btn-icon-action" data-action="open-album" data-id="${activity.id}" data-album-link="${activity.albumLink}" title="อัลบั้มเต็ม">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                             <button class="btn-icon-action" data-action="share-activity" data-id="${activity.id}" title="แชร์กิจกรรม">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function incrementView(id) {
+            const activity = globalActivities.find(a => a.id === id);
+            if (activity) {
+                if (!activity.views) activity.views = 0;
+                activity.views++;
+                
+                const badgeElement = document.getElementById(`view-badge-${id}`);
+                if (badgeElement) {
+                    badgeElement.querySelector('span').textContent = activity.views;
+                    badgeElement.classList.add('view-count-update');
+                    setTimeout(() => badgeElement.classList.remove('view-count-update'), 300);
+                }
+            }
+
+            const formData = new FormData();
+            formData.append('action', 'incrementView');
+            formData.append('id', id);
+            
+            fetch(CONFIG.BASE_URL, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' 
+            }).catch(err => console.log('View count error', err));
+        }
+
+        function shareActivity(id) {
+            const activity = globalActivities.find(a => a.id === id);
+            const title = activity ? activity.title : 'กิจกรรมโรงเรียน';
+            const currentUrl = window.location.href.split('?')[0];
+            const shareUrl = `${currentUrl}?activityId=${id}`;
+
+            Swal.fire({
+                title: 'แชร์กิจกรรมนี้',
+                html: `
+                    <p style="margin-bottom: 20px; font-size: 0.9rem; color: #666;">${title}</p>
+                    <div class="share-grid">
+                        <div class="share-item" onclick="handleSocialShare('copy', '${shareUrl}')">
+                            <div class="share-icon share-copy"><i class="fas fa-link"></i></div>
+                            <span class="share-label">คัดลอกลิงก์</span>
+                        </div>
+                        <div class="share-item" onclick="handleSocialShare('facebook', '${shareUrl}')">
+                            <div class="share-icon share-fb"><i class="fab fa-facebook-f"></i></div>
+                            <span class="share-label">Facebook</span>
+                        </div>
+                         <div class="share-item" onclick="handleSocialShare('instagram', '${shareUrl}')">
+                            <div class="share-icon share-ig"><i class="fab fa-instagram"></i></div>
+                            <span class="share-label">Instagram</span>
+                        </div>
+                        <div class="share-item" onclick="handleSocialShare('line', '${shareUrl}')">
+                            <div class="share-icon share-line"><i class="fab fa-line"></i></div>
+                            <span class="share-label">Line</span>
+                        </div>
+                        <div class="share-item" onclick="handleSocialShare('tiktok', '${shareUrl}')">
+                            <div class="share-icon share-tiktok"><i class="fab fa-tiktok"></i></div>
+                            <span class="share-label">TikTok</span>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                customClass: { popup: 'share-popup' }
+            });
+        }
+
+        window.handleSocialShare = function(platform, url, title = '') {
+            let shareLink = '';
+            
+            switch(platform) {
+                case 'facebook': shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`; break;
+                case 'line': shareLink = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`; break;
+                case 'twitter': shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`; break;
+                case 'copy':
+                case 'instagram': 
+                case 'tiktok':    
+                    navigator.clipboard.writeText(url).then(() => {
+                        const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                        let msg = 'คัดลอกลิงก์แล้ว';
+                        if (platform === 'instagram') msg = 'คัดลอกลิงก์แล้ว (นำไปวางใน IG ได้เลย)';
+                        if (platform === 'tiktok') msg = 'คัดลอกลิงก์แล้ว (นำไปวางใน TikTok ได้เลย)';
+                        Toast.fire({ icon: 'success', title: msg });
+                    });
+                    return; 
+            }
+
+            if(shareLink) window.open(shareLink, '_blank', 'width=600,height=400');
+        };
+
+        function openImageModal(imageUrl) {
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageUrl;
+            document.getElementById('imageModal').style.display = 'block';
+            currentZoom = 1;
+            modalImage.style.transform = 'scale(1) translate(0, 0)';
+            updateZoomInfo();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+            currentZoom = 1;
+            document.getElementById('modalImage').style.transform = 'scale(1) translate(0, 0)';
+            document.body.style.overflow = 'auto';
+        }
+
+        function zoomIn() { if (currentZoom < 5) { currentZoom += 0.25; applyZoom(); } }
+        function zoomOut() { if (currentZoom > 0.25) { currentZoom -= 0.25; applyZoom(); } }
+        function resetZoom() { currentZoom = 1; document.getElementById('modalImage').style.transform = 'scale(1) translate(0, 0)'; updateZoomInfo(); }
+        function applyZoom() {
+            const modalImage = document.getElementById('modalImage');
+            const currentTransform = modalImage.style.transform;
+            const translateMatch = currentTransform.match(/translate\(([^)]+)\)/);
+            const translateValue = translateMatch ? translateMatch[1] : '0, 0';
+            modalImage.style.transform = `scale(${currentZoom}) translate(${translateValue})`;
+            updateZoomInfo();
+        }
+        function updateZoomInfo() { document.getElementById('zoomInfo').textContent = Math.round(currentZoom * 100) + '%'; }
+        function handleWheelZoom(e) { e.preventDefault(); e.deltaY < 0 ? zoomIn() : zoomOut(); }
+
+        function setupImageDrag() {
+            const modalImage = document.getElementById('modalImage');
+            modalImage.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', endDrag);
+            modalImage.addEventListener('touchstart', startDragTouch);
+            document.addEventListener('touchmove', dragTouch);
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function startDrag(e) {
+            if (currentZoom <= 1) return;
+            isDragging = true;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            const modalImage = document.getElementById('modalImage');
+            const transform = modalImage.style.transform;
+            const translateMatch = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+            if (translateMatch) { imageStartX = parseFloat(translateMatch[1]) || 0; imageStartY = parseFloat(translateMatch[2]) || 0; }
+            else { imageStartX = 0; imageStartY = 0; }
+            e.preventDefault();
+        }
+
+        function startDragTouch(e) {
+            if (currentZoom <= 1) return;
+            isDragging = true;
+            const touch = e.touches[0];
+            dragStartX = touch.clientX;
+            dragStartY = touch.clientY;
+            const modalImage = document.getElementById('modalImage');
+            const transform = modalImage.style.transform;
+            const translateMatch = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+            if (translateMatch) { imageStartX = parseFloat(translateMatch[1]) || 0; imageStartY = parseFloat(translateMatch[2]) || 0; }
+            else { imageStartX = 0; imageStartY = 0; }
+            e.preventDefault();
+        }
+
+        function drag(e) {
+            if (!isDragging || currentZoom <= 1) return;
+            const deltaX = e.clientX - dragStartX;
+            const deltaY = e.clientY - dragStartY;
+            const modalImage = document.getElementById('modalImage');
+            modalImage.style.transform = `scale(${currentZoom}) translate(${imageStartX + deltaX}px, ${imageStartY + deltaY}px)`;
+            e.preventDefault();
+        }
+
+        function dragTouch(e) {
+            if (!isDragging || currentZoom <= 1) return;
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - dragStartX;
+            const deltaY = touch.clientY - dragStartY;
+            const modalImage = document.getElementById('modalImage');
+            modalImage.style.transform = `scale(${currentZoom}) translate(${imageStartX + deltaX}px, ${imageStartY + deltaY}px)`;
+            e.preventDefault();
+        }
+
+        function endDrag() { isDragging = false; }
+
+        function openActivityDetail(activityId) {
+            incrementView(activityId);
+
+            const activity = globalActivities.find(a => a.id === activityId);
+            if (!activity) return;
+            
+            const dateObj = parseDateCorrectly(activity.date);
+            const dateStr = dateObj.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            const tagsHtml = activity.tags ? String(activity.tags).split(',').map(tag => 
+                `<span class="activity-detail-tag"><i class="fas fa-hashtag"></i> ${tag.trim()}</span>`
+            ).join('') : '';
+            
+            const photographerHtml = activity.photographer ? 
+                `<span><i class="fas fa-camera"></i> ภาพโดย: ${activity.photographer}</span>` : '';
+
+            const modalContent = `
+                <div class="activity-detail-header">
+                    <img src="${activity.imageUrl}" alt="${activity.title}" class="activity-detail-image">
+                    <div class="activity-detail-overlay">
+                        <div class="activity-detail-title-wrapper">
+                            <h2 class="activity-detail-title">${activity.title}</h2>
+                            <div class="activity-detail-meta">
+                                <span><i class="fas fa-calendar-alt"></i> ${dateStr}</span>
+                                ${photographerHtml}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-detail-body">
+                    <div class="activity-detail-description">${activity.description}</div>
+                    
+                    ${tagsHtml ? `<div class="activity-detail-tags">${tagsHtml}</div>` : ''}
+                    
+                    <div class="activity-detail-actions">
+                        <button class="btn btn-primary" onclick="window.open('${activity.albumLink}', '_blank'); incrementView('${activity.id}')">
+                            <i class="fas fa-images"></i> ดูอัลบั้มรูปภาพทั้งหมด
+                        </button>
+                        <button class="btn btn-secondary" onclick="shareActivity('${activity.id}')">
+                            <i class="fas fa-share-alt"></i> แชร์กิจกรรม
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('activityModalContent').innerHTML = modalContent;
+            document.getElementById('activityModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeActivityModal() {
+            document.getElementById('activityModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function updatePagination() {
+            document.getElementById('prevBtn').disabled = currentPage <= 1;
+            document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+            document.getElementById('pageInfo').textContent = `หน้า ${currentPage} จาก ${totalPages}`;
+        }
+
+        function changePage(page) {
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayActivities(currentActivities); 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function handleSearch() {
+            currentPage = 1;
+            loadActivities();
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        function showLoginForm() { document.getElementById('loginSection').style.display = 'block'; }
+        function hideLoginForm() { document.getElementById('loginSection').style.display = 'none'; document.getElementById('loginForm').reset(); }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            Swal.fire({
+                title: 'กำลังเข้าสู่ระบบ...',
+                text: 'กรุณารรอสักครู่',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                const params = new URLSearchParams();
+                params.append('action', 'login');
+                params.append('username', username);
+                params.append('password', password);
+                
+                const response = await fetch(`${CONFIG.BASE_URL}?${params.toString()}`, {
+                    signal: controller.signal,
+                    mode: 'cors',
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
+                
+                if (result && result.success) {
+                    sessionStorage.setItem('adminToken', result.token);
+                    isLoggedIn = true;
+                    hideLoginForm();
+                    showAdminInterface();
+                    
+                    loadActivities(); 
+                    
+                    Swal.fire({ icon: 'success', title: 'เข้าสู่ระบบสำเร็จ', timer: 2000, showConfirmButton: false });
+                } else {
+                    throw new Error(result?.error || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+                }
+            } catch (error) {
+                Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: error.message });
+            }
+        }
+
+        function logout() {
+            Swal.fire({
+                title: 'ยืนยันการออกจากระบบ',
+                text: "คุณต้องการออกจากระบบใช่หรือไม่?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'ใช่, ออกจากระบบ',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    sessionStorage.removeItem('adminToken');
+                    isLoggedIn = false;
+                    hideAdminInterface();
+                    loadActivities(); 
+                    Swal.fire({
+                        title: 'ออกจากระบบสำเร็จ!',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
+
+        function showAdminInterface() {
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'inline-flex';
+            
+            document.querySelector('.search-section').style.display = 'none';
+            document.querySelector('.activities-section').style.display = 'none';
+            
+            document.getElementById('adminSection').style.display = 'block';
+            
+            window.scrollTo(0, 0);
+        }
+
+        function hideAdminInterface() {
+            document.getElementById('loginBtn').style.display = 'inline-flex';
+            document.getElementById('logoutBtn').style.display = 'none';
+            
+            document.querySelector('.search-section').style.display = ''; 
+            document.querySelector('.activities-section').style.display = ''; 
+            
+            document.getElementById('adminSection').style.display = 'none';
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('togglePassword').querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function loadAdminData() {
+            const tbody = document.getElementById('adminTableBody');
+            
+            let activities = [...globalActivities];
+            activities.sort((a, b) => parseDateCorrectly(b.date) - parseDateCorrectly(a.date));
+            
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #666;"><i class="fas fa-spinner fa-spin" style="margin-right: 8px; color: var(--primary-color);"></i> กำลังโหลดข้อมูล...</td></tr>`;
+            
+            setTimeout(() => {
+                if (activities.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #666;">ยังไม่มีกิจกรรมในระบบ <br> <small>คลิก "เพิ่มกิจกรรม" เพื่อเริ่มต้น</small></td></tr>`;
+                    document.getElementById('adminTotalCount').textContent = '0';
+                } else {
+                    tbody.innerHTML = activities.map((activity, index) => {
+                        
+                        const activityDate = parseDateCorrectly(activity.date);
+                        const thaiDate = activityDate.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+                        const year = activityDate.getFullYear();
+                        
+                        const desc = String(activity.description || '');
+                        const title = String(activity.title || 'ไม่มีชื่อกิจกรรม');
+                        const tags = String(activity.tags || '-');
+                        
+                        const isPublished = (activity.isPublished === true || activity.isPublished === 'true' || activity.isPublished === 'TRUE' || activity.isPublished === 1);
+                        
+                        return `
+                        <tr style="animation: fadeIn 0.3s ease-in-out ${index * 0.05}s both;" data-status="${isPublished ? 'published' : 'draft'}" data-year="${year}">
+                            <td>
+                                <div class="admin-title-text" style="font-weight: 500; color: var(--primary-dark); margin-bottom: 4px;">${title}</div>
+                                <small style="color: var(--text-muted);">${desc.substring(0, 50)}${desc.length > 50 ? '...' : ''}</small>
+                            </td>
+                            <td>
+                                <div style="font-size: 0.9rem; color: var(--text-main); margin-bottom: 4px;"><i class="fas fa-calendar-alt" style="color: var(--primary-color); margin-right: 5px;"></i> ${thaiDate}</div>
+                                <small class="admin-tags-text" style="color: var(--text-muted); background: #f8fbff; padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; display: inline-block;">${tags}</small>
+                            </td>
+                            <td>
+                                <span class="status-badge ${isPublished ? 'status-published' : 'status-draft'}">
+                                    <i class="fas fa-${isPublished ? 'check-circle' : 'circle'}" style="margin-right: 4px;"></i>
+                                    ${isPublished ? 'เผยแพร่' : 'แบบร่าง'}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-icon btn-edit" onclick="editActivity('${activity.id}')" title="แก้ไข">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-icon btn-toggle" onclick="togglePublish('${activity.id}')" title="${isPublished ? 'ซ่อน' : 'เผยแพร่'}">
+                                        <i class="fas fa-${isPublished ? 'eye-slash' : 'eye'}"></i>
+                                    </button>
+                                    <button class="btn-icon btn-delete" onclick="deleteActivity('${activity.id}')" title="ลบ">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    }).join('');
+                    
+                    document.getElementById('adminTotalCount').textContent = activities.length;
+                    filterAdminActivities();
+                }
+            }, 300);
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`;
+        document.head.appendChild(style);
+
+        function switchImageTab(mode, prefix = '') {
+            const tabUrl = document.getElementById(prefix + 'tabUrl');
+            const tabUpload = document.getElementById(prefix + 'tabUpload');
+            const inputUrlGroup = document.getElementById(prefix + 'inputUrlGroup');
+            const inputUploadGroup = document.getElementById(prefix + 'inputUploadGroup');
+            
+            if (mode === 'url') {
+                tabUrl.classList.add('active');
+                tabUpload.classList.remove('active');
+                inputUrlGroup.style.display = 'block';
+                inputUploadGroup.style.display = 'none';
+            } else {
+                tabUpload.classList.add('active');
+                tabUrl.classList.remove('active');
+                inputUploadGroup.style.display = 'block';
+                inputUrlGroup.style.display = 'none';
+            }
+        }
+        
+        function createThaiDateSelectors(prefix, defaultDateStr = null) {
+            let day = new Date().getDate();
+            let month = new Date().getMonth() + 1; 
+            let year = new Date().getFullYear();
+            
+            if (defaultDateStr) {
+                 const dateParts = defaultDateStr.split('/');
+                 if (dateParts.length === 3) {
+                     day = parseInt(dateParts[0]);
+                     month = parseInt(dateParts[1]);
+                     year = parseInt(dateParts[2]);
+                 } else {
+                     const oldParts = defaultDateStr.split('-');
+                     if (oldParts.length >= 3) {
+                         year = parseInt(oldParts[0]);
+                         month = parseInt(oldParts[1]);
+                         day = parseInt(oldParts[2]);
+                     }
+                 }
+            }
+
+            const currentYearBE = new Date().getFullYear() + 543;
+            
+            let dayOptions = '<option value="">วัน</option>';
+            for(let i=1; i<=31; i++) {
+                dayOptions += `<option value="${i}" ${i === day ? 'selected' : ''}>${i}</option>`;
+            }
+            
+            const thaiMonths = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+            let monthOptions = '<option value="">เดือน</option>';
+            thaiMonths.forEach((m, index) => {
+                const val = index + 1;
+                monthOptions += `<option value="${val}" ${val === month ? 'selected' : ''}>${m}</option>`;
+            });
+            
+            let yearOptions = '<option value="">ปี พ.ศ.</option>';
+            const startYear = currentYearBE - 10;
+            const endYear = currentYearBE + 2;
+            const targetYearBE = year + 543;
+            
+            for(let y=endYear; y>=startYear; y--) {
+                yearOptions += `<option value="${y}" ${y === targetYearBE ? 'selected' : ''}>${y}</option>`;
+            }
+            
+            return `
+                <div class="date-selector-group">
+                    <select id="${prefix}Day" class="date-select date-select-day">${dayOptions}</select>
+                    <select id="${prefix}Month" class="date-select date-select-month">${monthOptions}</select>
+                    <select id="${prefix}Year" class="date-select date-select-year">${yearOptions}</select>
+                </div>
+            `;
+        }
+        
+        function getValFromThaiDateSelectors(prefix) {
+            const d = document.getElementById(prefix + 'Day').value;
+            const m = document.getElementById(prefix + 'Month').value;
+            const yBE = document.getElementById(prefix + 'Year').value;
+            
+            if(!d || !m || !yBE) return null;
+            
+            const yAD = parseInt(yBE) - 543;
+            const dd = d.toString().padStart(2, '0');
+            const mm = m.toString().padStart(2, '0');
+            
+            return `${yAD}-${mm}-${dd}`;
+        }
+
+        async function uploadFileToDrive(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async function() {
+                    try {
+                        const token = sessionStorage.getItem('adminToken');
+                        const base64Data = reader.result; 
+                        
+                        const payload = {
+                            action: 'uploadImage',
+                            token: token,
+                            image: base64Data,
+                            filename: file.name
+                        };
+
+                        const response = await fetch(CONFIG.BASE_URL, {
+                            method: 'POST',
+                            body: JSON.stringify(payload),
+                            headers: { "Content-Type": "text/plain;charset=utf-8" } 
+                        });
+
+                        if (!response.ok) throw new Error('Network error');
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            resolve(result.imageUrl);
+                        } else {
+                            reject(new Error(result.error || 'Upload failed'));
+                        }
+                    } catch (e) {
+                        reject(e);
+                    }
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        function showAddActivityForm() {
+            Swal.fire({
+                title: 'เพิ่มกิจกรรมใหม่',
+                html: `
+                    <div style="text-align: left;">
+                        <div class="form-group"><label>หัวข้อกิจกรรม</label><input type="text" id="actTitle" class="form-input" required placeholder="ระบุชื่อกิจกรรม"></div>
+                        
+                        <!-- Image Upload Section -->
+                        <div class="image-option-tabs">
+                            <button type="button" class="btn-tab active" id="add_tabUrl">ใช้ลิงก์</button>
+                            <button type="button" class="btn-tab" id="add_tabUpload">อัปโหลดรูป</button>
+                        </div>
+                        <div id="add_inputUrlGroup">
+                            <label>URL รูปภาพปก</label>
+                            <input type="text" id="actImageUrl" class="form-input" placeholder="วางลิงก์ Google Drive หรือ ID">
+                        </div>
+                        <div id="add_inputUploadGroup" style="display:none;">
+                            <label>เลือกไฟล์รูปภาพ</label>
+                            <input type="file" id="actImageFile" class="form-input" accept="image/*">
+                            <div id="add_uploadPreview" style="margin-top:10px; text-align:center;"></div>
+                        </div>
+                        <!-- End Image Upload Section -->
+
+                        <div class="form-group" style="margin-top:15px;"><label>รายละเอียด</label><textarea id="actDescription" class="form-input" rows="3" required placeholder="รายละเอียดโดยย่อ"></textarea></div>
+                        <div class="form-group"><label>ลิงก์อัลบั้มเต็ม (Facebook/Drive)</label><input type="url" id="actAlbumLink" class="form-input" required placeholder="https://..."></div>
+                        
+                        <div class="form-group">
+                            <label>วันที่จัดกิจกรรม (วัน/เดือน/ปี พ.ศ.)</label>
+                            ${createThaiDateSelectors('add_')}
+                        </div>
+                        
+                        <div class="form-group"><label>ภาพถ่ายโดย</label><input type="text" id="actPhotographer" class="form-input" placeholder="ระบุชื่อช่างภาพ (ไม่บังคับ)"></div>
+                        <div class="form-group"><label>แท็ก (คั่นด้วยจุลภาค ,)</label><input type="text" id="actTags" class="form-input" placeholder="เช่น กีฬา, วิชาการ"></div>
+                        
+                        <div class="form-group">
+                             <label style="margin-bottom: 5px;">สถานะการเผยแพร่</label>
+                             <div class="switch-wrapper">
+                                <label class="switch">
+                                    <input type="checkbox" id="actPublished" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="switch-label">เผยแพร่ทันที</span>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true, confirmButtonText: 'บันทึกข้อมูล', cancelButtonText: 'ยกเลิก', width: '600px',
+                padding: '2rem',
+                customClass: {
+                    input: 'my-swal-input',
+                    popup: 'my-swal-popup'
+                },
+                didOpen: () => {
+                    document.getElementById('add_tabUrl').addEventListener('click', () => switchImageTab('url', 'add_'));
+                    document.getElementById('add_tabUpload').addEventListener('click', () => switchImageTab('upload', 'add_'));
+                    
+                    document.getElementById('actImageFile').addEventListener('change', function() {
+                        const file = this.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                document.getElementById('add_uploadPreview').innerHTML = `<img src="${e.target.result}" style="max-height:150px; border-radius:12px; border:2px solid #e6f2ff;">`;
+                            }
+                            reader.readAsDataURL(file);
+                        } else {
+                            document.getElementById('add_uploadPreview').innerHTML = '';
+                        }
+                    });
+                },
+                preConfirm: async () => {
+                    const title = document.getElementById('actTitle').value;
+                    const description = document.getElementById('actDescription').value;
+                    const albumLink = document.getElementById('actAlbumLink').value;
+                    
+                    const date = getValFromThaiDateSelectors('add_');
+                    
+                    const photographer = document.getElementById('actPhotographer').value;
+                    const tags = document.getElementById('actTags').value;
+                    const isPublished = document.getElementById('actPublished').checked;
+                    
+                    let imageUrl = '';
+                    const isUploadMode = document.getElementById('add_tabUpload').classList.contains('active');
+                    
+                    if (isUploadMode) {
+                        const fileInput = document.getElementById('actImageFile');
+                        if (fileInput.files.length > 0) {
+                            try {
+                                Swal.showLoading(); 
+                                imageUrl = await uploadFileToDrive(fileInput.files[0]);
+                            } catch (e) {
+                                Swal.showValidationMessage('อัปโหลดรูปภาพไม่สำเร็จ: ' + e.message);
+                                return false;
+                            }
+                        } else {
+                            Swal.showValidationMessage('กรุณาเลือกไฟล์รูปภาพ');
+                            return false;
+                        }
+                    } else {
+                        imageUrl = document.getElementById('actImageUrl').value;
+                        if (!imageUrl) {
+                            Swal.showValidationMessage('กรุณาระบุ URL รูปภาพ');
+                            return false;
+                        }
+                    }
+
+                    if (!title || !description || !imageUrl || !albumLink || !date) { Swal.showValidationMessage('กรุณากรอกข้อมูลให้ครบถ้วน'); return false; }
+                    
+                    if (!isUploadMode) {
+                        const driveMatch = imageUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                        if (driveMatch) {
+                            imageUrl = 'https://lh3.googleusercontent.com/d/' + driveMatch[1];
+                        } else if (!imageUrl.startsWith('http') && imageUrl.length > 0) {
+                            imageUrl = 'https://lh3.googleusercontent.com/d/' + imageUrl;
+                        }
+                    }
+
+                    return { title, description, imageUrl, albumLink, date, photographer, tags, isPublished };
+                }
+            }).then((result) => { if (result.isConfirmed) addActivity(result.value); });
+        }
+
+        async function addActivity(data) {
+            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            try {
+                const token = sessionStorage.getItem('adminToken');
+                const formData = new FormData(); 
+                formData.append('action', 'addActivity');
+                formData.append('token', token);
+                formData.append('id', 'act_' + Date.now());
+                Object.keys(data).forEach(key => formData.append(key, data[key]));
+                
+                const response = await fetch(CONFIG.BASE_URL, { method: 'POST', body: formData });
+                if (response.ok) {
+                    await loadActivities();
+                    Swal.fire({ icon: 'success', title: 'เพิ่มสำเร็จ', timer: 1500, showConfirmButton: false });
+                } else throw new Error('Server error');
+            } catch (error) { Swal.fire({ icon: 'error', title: 'ไม่สามารถเพิ่มข้อมูลได้', text: error.message }); }
+        }
+
+        function editActivity(id) {
+            const activity = globalActivities.find(a => a.id === id);
+            if (!activity) {
+                Swal.fire({ icon: 'error', title: 'ไม่พบข้อมูลกิจกรรม' });
+                return;
+            }
+
+            const d = parseDateCorrectly(activity.date);
+            const localDateStr = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+            
+            const isPub = (activity.isPublished === true || activity.isPublished === 'true' || activity.isPublished === 'TRUE' || activity.isPublished === 1);
+            
+            Swal.fire({
+                title: 'แก้ไขกิจกรรม',
+                html: `
+                    <div style="text-align: left;">
+                        <div class="form-group"><label>หัวข้อกิจกรรม</label><input type="text" id="editTitle" class="form-input" value="${activity.title || ''}" required></div>
+                        
+                        <!-- Image Upload Section -->
+                        <div class="image-option-tabs">
+                            <button type="button" class="btn-tab active" id="edit_tabUrl">ใช้ลิงก์</button>
+                            <button type="button" class="btn-tab" id="edit_tabUpload">อัปโหลดรูป</button>
+                        </div>
+                        <div id="edit_inputUrlGroup">
+                            <label>URL รูปภาพปก</label>
+                            <input type="text" id="editImageUrl" class="form-input" value="${activity.imageUrl || ''}" required>
+                        </div>
+                        <div id="edit_inputUploadGroup" style="display:none;">
+                            <label>เลือกไฟล์รูปภาพ (หากต้องการเปลี่ยน)</label>
+                            <input type="file" id="editImageFile" class="form-input" accept="image/*">
+                            <div id="edit_uploadPreview" style="margin-top:10px; text-align:center;"></div>
+                        </div>
+                        <!-- End Image Upload Section -->
+
+                        <div class="form-group" style="margin-top:15px;"><label>รายละเอียด</label><textarea id="editDescription" class="form-input" rows="3" required>${activity.description || ''}</textarea></div>
+                        <div class="form-group"><label>ลิงก์อัลบั้มเต็ม</label><input type="url" id="editAlbumLink" class="form-input" value="${activity.albumLink || ''}" required></div>
+                        
+                        <!-- วันที่ -->
+                        <div class="form-group">
+                            <label>วันที่ (วัน/เดือน/ปี พ.ศ.)</label>
+                             ${createThaiDateSelectors('edit_', localDateStr)}
+                        </div>
+                        
+                        <div class="form-group"><label>ภาพถ่ายโดย</label><input type="text" id="editPhotographer" class="form-input" value="${activity.photographer || ''}"></div>
+                        <div class="form-group"><label>แท็ก</label><input type="text" id="editTags" class="form-input" value="${activity.tags || ''}"></div>
+                        
+                        <div class="form-group">
+                             <label style="margin-bottom: 5px;">สถานะการเผยแพร่</label>
+                             <div class="switch-wrapper">
+                                <label class="switch">
+                                    <input type="checkbox" id="editPublished" ${isPub ? 'checked' : ''}>
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="switch-label">เผยแพร่บนหน้าเว็บ</span>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true, 
+                confirmButtonText: 'บันทึกการแก้ไข', 
+                cancelButtonText: 'ยกเลิก',
+                width: '600px',
+                padding: '2rem',
+                didOpen: () => {
+                    document.getElementById('edit_tabUrl').addEventListener('click', () => switchImageTab('url', 'edit_'));
+                    document.getElementById('edit_tabUpload').addEventListener('click', () => switchImageTab('upload', 'edit_'));
+                    
+                    document.getElementById('editImageFile').addEventListener('change', function() {
+                        const file = this.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                document.getElementById('edit_uploadPreview').innerHTML = `<img src="${e.target.result}" style="max-height:150px; border-radius:12px; border:2px solid #e6f2ff;">`;
+                            }
+                            reader.readAsDataURL(file);
+                        } else {
+                            document.getElementById('edit_uploadPreview').innerHTML = '';
+                        }
+                    });
+                },
+                preConfirm: async () => {
+                    const title = document.getElementById('editTitle').value;
+                    const description = document.getElementById('editDescription').value;
+                    const albumLink = document.getElementById('editAlbumLink').value;
+                    
+                    const date = getValFromThaiDateSelectors('edit_');
+                    
+                    const photographer = document.getElementById('editPhotographer').value;
+                    const tags = document.getElementById('editTags').value;
+                    const isPublished = document.getElementById('editPublished').checked;
+
+                    if (!date) {
+                         Swal.showValidationMessage('กรุณาระบุวันที่ให้ครบถ้วน');
+                         return false;
+                    }
+
+                    let imageUrl = '';
+                    const isUploadMode = document.getElementById('edit_tabUpload').classList.contains('active');
+                    
+                    if (isUploadMode) {
+                        const fileInput = document.getElementById('editImageFile');
+                        if (fileInput.files.length > 0) {
+                            try {
+                                Swal.showLoading(); 
+                                imageUrl = await uploadFileToDrive(fileInput.files[0]);
+                            } catch (e) {
+                                Swal.showValidationMessage('อัปโหลดรูปภาพไม่สำเร็จ: ' + e.message);
+                                return false;
+                            }
+                        } else {
+                            imageUrl = activity.imageUrl; 
+                        }
+                    } else {
+                        imageUrl = document.getElementById('editImageUrl').value;
+                    }
+
+                    if (!imageUrl.startsWith('data:')) { 
+                        const driveMatch = imageUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                        if (driveMatch) {
+                            imageUrl = 'https://lh3.googleusercontent.com/d/' + driveMatch[1];
+                        } else if (!imageUrl.startsWith('http') && imageUrl.length > 0) {
+                            imageUrl = 'https://lh3.googleusercontent.com/d/' + imageUrl;
+                        }
+                    }
+                    
+                    const data = { title, description, imageUrl, albumLink, date, photographer, tags, isPublished };
+
+                    return data;
+                }
+            }).then((result) => { 
+                if (result.isConfirmed && result.value) { 
+                    updateActivity(id, result.value); 
+                } 
+            });
+        }
+
+        async function updateActivity(id, data) {
+            Swal.fire({ title: 'กำลังแก้ไข...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            try {
+                const token = sessionStorage.getItem('adminToken');
+                const formData = new FormData();
+                formData.append('action', 'updateActivity');
+                formData.append('token', token);
+                formData.append('id', id);
+                Object.keys(data).forEach(key => formData.append(key, data[key]));
+                
+                const response = await fetch(CONFIG.BASE_URL, { method: 'POST', body: formData });
+                if (response.ok) {
+                    await loadActivities();
+                    Swal.fire({ icon: 'success', title: 'แก้ไขสำเร็จ', timer: 1500, showConfirmButton: false });
+                } else throw new Error('Server error');
+            } catch (error) { Swal.fire({ icon: 'error', title: 'ไม่สามารถแก้ไขได้', text: error.message }); }
+        }
+
+        async function togglePublish(id) {
+            const activity = globalActivities.find(a => a.id === id);
+            
+            const isPub = (activity.isPublished === true || activity.isPublished === 'true' || activity.isPublished === 'TRUE' || activity.isPublished === 1);
+            const actionText = isPub ? 'ซ่อน' : 'เผยแพร่';
+            
+            Swal.fire({
+                title: 'ยืนยันการเปลี่ยนสถานะ',
+                text: `คุณต้องการ "${actionText}" กิจกรรมนี้ใช่หรือไม่?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                     try {
+                        const token = sessionStorage.getItem('adminToken');
+                        const formData = new FormData();
+                        formData.append('action', 'togglePublish');
+                        formData.append('token', token);
+                        formData.append('id', id);
+                        
+                        const response = await fetch(CONFIG.BASE_URL, { method: 'POST', body: formData });
+                        if (response.ok) {
+                            await loadActivities();
+                            const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                            Toast.fire({ icon: 'success', title: 'อัปเดตสถานะเรียบร้อย' });
+                        }
+                    } catch (error) { console.error(error); }
+                }
+            });
+        }
+
+        function deleteActivity(id) {
+            Swal.fire({
+                title: 'ยืนยันการลบ', 
+                text: 'คุณต้องการลบกิจกรรมนี้หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้', 
+                icon: 'warning',
+                showCancelButton: true, 
+                confirmButtonText: 'ลบข้อมูล', 
+                cancelButtonText: 'ยกเลิก'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                    try {
+                        const token = sessionStorage.getItem('adminToken');
+                        const formData = new FormData();
+                        formData.append('action', 'deleteActivity');
+                        formData.append('token', token);
+                        formData.append('id', id);
+                        
+                        const response = await fetch(CONFIG.BASE_URL, { method: 'POST', body: formData });
+                        if (response.ok) {
+                            await loadActivities();
+                            Swal.fire({ icon: 'success', title: 'ลบสำเร็จ', timer: 1500, showConfirmButton: false });
+                        }
+                    } catch (error) { Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: error.message }); }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
